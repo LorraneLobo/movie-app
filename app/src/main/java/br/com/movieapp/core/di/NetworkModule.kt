@@ -56,15 +56,16 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideMovieService(
-        client: OkHttpClient,
-        converterFactory: GsonConverterFactory
-    ): MovieService {
+    fun provideMovieService(retrofit: Retrofit): MovieService {
+        return retrofit.create(MovieService::class.java)
+    }
+
+    @Provides
+    fun provideRetrofit(client: OkHttpClient, converterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .addConverterFactory(converterFactory)
             .build()
-            .create(MovieService::class.java)
     }
 }
